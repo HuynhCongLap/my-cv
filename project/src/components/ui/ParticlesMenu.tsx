@@ -3,10 +3,9 @@ import React from "react";
 
 const icons = [
   { key: "codeRain", icon: <Sparkles />, label: "Digital Rain" },
+  { key: "aurora", icon: <Sunrise />, label: "Aurora" },
   { key: "stardust", icon: <Cloud />, label: "Stardust" },
   { key: "firefly", icon: <Zap />, label: "Fireflies" },
-  { key: "aurora", icon: <Sunrise />, label: "Aurora" },
-  { key: "tech", icon: <Cpu />, label: "Tech Fragments" },
 ] as const;
 
 export type EffectKey = typeof icons[number]["key"];

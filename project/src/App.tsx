@@ -14,7 +14,6 @@ import CodeRainParticles from "./components/3d/CodeRainParticles";
 import StardustParticles from "./components/3d/StardustParticles";
 import FireflyParticles from "./components/3d/FireflyParticles";
 import AuroraParticles from "./components/3d/AuroraParticles";
-import TechFragmentsParticles from "./components/3d/TechFragmentsParticles";
 import ParticlesMenu from "./components/ui/ParticlesMenu";
 
 // Type cho các hiệu ứng
@@ -23,7 +22,6 @@ export type EffectKey =
   | "stardust"
   | "firefly"
   | "aurora"
-  | "tech";
 
 // Function map, cho phép truyền props đặc biệt vào từng effect
 const effectMap: Record<EffectKey, (props?: any) => JSX.Element> = {
@@ -34,7 +32,6 @@ const effectMap: Record<EffectKey, (props?: any) => JSX.Element> = {
   ),
   firefly: (props) => <FireflyParticles {...props} />,
   aurora: (props) => <AuroraParticles {...props} />,
-  tech: (props) => <TechFragmentsParticles {...props} />,
 };
 
 function App() {

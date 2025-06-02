@@ -1,54 +1,71 @@
-import React, { useMemo, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-const COUNT = 16;
-const COLORS = ["#31fff6", "#38e3ff", "#18ff6c", "#9d8fff"];
+const COUNT = 400;
+const COLORS = ["#00ffff", "#bb00ff", "#00ff8c", "#0088ff"];
 
-export default function TechFragmentsParticles() {
-  const { viewport } = useThree();
-  const group = useRef<THREE.Group>(null);
+export default function HeroBackgroundParticles() {
+  const pointsRef = useRef<THREE.Points>(null);
 
-  const fragments = useMemo(() => {
-    return new Array(COUNT).fill(0).map((_, i) => ({
-      x: (Math.random() - 0.5) * viewport.width * 1.2,
-      y: (Math.random() - 0.5) * viewport.height * 1.2,
-      size: 0.18 + Math.random() * 0.14,
-      color: COLORS[i % COLORS.length],
-      angle: Math.random() * Math.PI * 2,
-      speed: 0.04 + Math.random() * 0.09,
-    }));
-  }, [viewport.width, viewport.height]);
+  const positions = useMemo(() => {
+    const arr = new Float32Array(COUNT * 3);
+    for (let i = 0; i < COUNT; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 2 + Math.random() * 5;
+      arr[i * 3] = Math.cos(angle) * radius;
+      arr[i * 3 + 1] = Math.sin(angle) * radius;
+      arr[i * 3 + 2] = -Math.random() * 20;
+    }
+    return arr;
+  }, []);
 
-  useFrame(({ clock }) => {
-    if (!group.current) return;
-    const time = clock.getElapsedTime();
-    group.current.children.forEach((mesh, i) => {
-      const f = fragments[i];
-      mesh.position.x =
-        f.x + Math.sin(time * f.speed + f.angle) * (0.18 + 0.1 * i);
-      mesh.position.y =
-        f.y + Math.cos(time * f.speed + f.angle) * (0.13 + 0.09 * i);
-      mesh.rotation.z = f.angle + time * (0.3 + i * 0.1);
-    });
+  const colors = useMemo(() => {
+    const arr = new Float32Array(COUNT * 3);
+    for (let i = 0; i < COUNT; i++) {
+      const hex = new THREE.Color(COLORS[i % COLORS.length]);
+      arr[i * 3] = hex.r;
+      arr[i * 3 + 1] = hex.g;
+      arr[i * 3 + 2] = hex.b;
+    }
+    return arr;
+  }, []);
+
+  useFrame(() => {
+    if (!pointsRef.current) return;
+    const pos = pointsRef.current.geometry.attributes.position.array;
+    for (let i = 0; i < COUNT; i++) {
+      pos[i * 3 + 2] += 0.015; // ⏪ chậm hơn
+      if (pos[i * 3 + 2] > 2) pos[i * 3 + 2] = -20;
+    }
+    pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
-    <group ref={group}>
-      {fragments.map((f, i) => (
-        <mesh key={i} position={[f.x, f.y, 0]} rotation={[0, 0, f.angle]}>
-          <boxGeometry args={[f.size, f.size * 0.17 + 0.05, 0.08]} />
-          <meshStandardMaterial
-            color={f.color}
-            metalness={0.9}
-            roughness={0.22}
-            transparent
-            opacity={0.87}
-            emissive={f.color}
-            emissiveIntensity={0.2}
-          />
-        </mesh>
-      ))}
-    </group>
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          array={positions}
+          count={COUNT}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          array={colors}
+          count={COUNT}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.045} // 👈 nhỏ hơn
+        vertexColors
+        transparent
+        opacity={0.8}
+        depthWrite={false}
+        sizeAttenuation
+        blending={THREE.AdditiveBlending}
+      />
+    </points>
   );
 }

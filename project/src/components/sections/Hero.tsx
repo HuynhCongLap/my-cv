@@ -7,7 +7,6 @@ const Hero: React.FC = () => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
-  const scanLineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -43,24 +42,6 @@ const Hero: React.FC = () => {
         { opacity: 1 }
       );
 
-    // Avatar breathing effect
-    gsap.to(avatarRef.current, {
-      scale: 1.04,
-      duration: 2,
-      ease: 'sine.inOut',
-      yoyo: true,
-      repeat: -1,
-    });
-
-    // Scan line animation
-    gsap.to(scanLineRef.current, {
-      y: '100%',
-      duration: 2,
-      ease: 'power2.inOut',
-      repeat: -1,
-      yoyo: true,
-    });
-
     return () => {
       tl.kill();
     };
@@ -70,11 +51,6 @@ const Hero: React.FC = () => {
     <section id="top" className="relative h-screen flex items-center justify-center px-4 z-40">
       <div className="relative max-w-2xl mx-auto text-center z-50 flex flex-col items-center">
         <div className="bg-black/95 backdrop-blur-xl px-8 py-10 rounded-2xl shadow-2xl border border-white/10 w-full flex flex-col items-center relative overflow-hidden">
-          {/* Scan line */}
-          <div
-            ref={scanLineRef}
-            className="absolute top-0 left-0 w-full h-1 bg-cyan-400 opacity-20 mix-blend-screen"
-          />
 
           {/* Avatar */}
           <div ref={avatarRef} className="flex justify-center mb-3">
@@ -98,7 +74,7 @@ const Hero: React.FC = () => {
           {/* Title */}
           <h1
             ref={headingRef}
-            className="text-3xl md:text-5xl font-extrabold mb-2 font-mono text-accent-cyan tracking-tight glow-text animate-pulse"
+            className="text-3xl md:text-5xl font-extrabold mb-2 font-mono text-accent-cyan tracking-tight glow-text"
           >
             Cong Lap HUYNH
           </h1>
@@ -106,7 +82,7 @@ const Hero: React.FC = () => {
           {/* Job */}
           <p
             ref={subtitleRef}
-            className="text-lg md:text-2xl mb-3 text-white font-semibold animate-pulse"
+            className="text-lg md:text-2xl mb-3 text-white font-semibold"
           >
             3D Generalist & WebGL Developer
           </p>
@@ -117,6 +93,15 @@ const Hero: React.FC = () => {
             <br />
             Specializing in real-time 3D graphics, WebGL, and creative coding.
           </p>
+
+          <a
+            href="https://fallingibex9.artstation.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-block text-fuchsia-500 hover:text-fuchsia-400 transition-colors text-sm font-mono"
+          >
+            View Artstation Portfolio →
+          </a>
         </div>
       </div>
 
