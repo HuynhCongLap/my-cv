@@ -1,0 +1,64 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+.out/
+.next/
+coverage/
+
+# Vite cache
+.vite/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.log/
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# VSCode & IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional: Mac-specific files
+.AppleDouble
+.LSOverride
+
+# Optional: npm package lock files (choose the one you use)
+package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Misc
+*.local
+.cache/
+.cache-loader/
+*.bak
+*.tmp
+
+# Test coverage
+coverage/
+.nyc_output/

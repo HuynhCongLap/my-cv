@@ -4,6 +4,7 @@ import NavItem from '../ui/NavItem';
 
 const navItems = [
   { label: 'About', href: '#about' },
+  { label: 'Education', href: '#education' },
   { label: 'Skills', href: '#skills' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },

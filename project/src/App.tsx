@@ -8,7 +8,7 @@ import Experience from "./components/sections/Experience";
 import Projects from "./components/sections/Projects";
 import Contact from "./components/sections/Contact";
 import Avatar from "./components/3d/Avatar";
-
+import Education from "./components/sections/Education";
 // Các hiệu ứng particles
 import CodeRainParticles from "./components/3d/CodeRainParticles";
 import StardustParticles from "./components/3d/StardustParticles";
@@ -72,6 +72,7 @@ function App() {
       <Layout>
         <Hero />
         <About />
+        <Education />
         <Skills />
         <Experience />
         <Projects />
