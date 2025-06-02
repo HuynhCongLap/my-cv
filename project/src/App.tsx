@@ -15,7 +15,7 @@ import StardustParticles from "./components/3d/StardustParticles";
 import FireflyParticles from "./components/3d/FireflyParticles";
 import AuroraParticles from "./components/3d/AuroraParticles";
 import ParticlesMenu from "./components/ui/ParticlesMenu";
-
+import MusicControls from "./components/ui/MusicControls";
 // Type cho các hiệu ứng
 export type EffectKey =
   | "codeRain"
@@ -64,7 +64,7 @@ function App() {
 
       {/* Menu chọn hiệu ứng */}
       <ParticlesMenu selected={effect} onSelect={setEffect} />
-
+      <MusicControls />
       {/* Nội dung chính */}
       <Layout>
         <Hero />
