@@ -1,8 +1,14 @@
 import React, { useRef, useState, FormEvent } from 'react';
 import { gsap } from 'gsap';
+import emailjs from 'emailjs-com';
 import Button from '../ui/Button';
 import Card from '../ui/Card';
 import { Mail, Phone, MapPin } from 'lucide-react';
+
+// 💡 Thay thế bằng các ID thật của bạn
+const SERVICE_ID = 'service_zflqmmk';
+const TEMPLATE_ID = 'template_zw1jre9';
+const PUBLIC_KEY = 'HJWSs8jMC3H03Tdh_';
 
 interface FormState {
   name: string;
@@ -12,14 +18,14 @@ interface FormState {
 
 const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  
+  const formRef = useRef<HTMLFormElement | null>(null);
+
   const [formData, setFormData] = useState<FormState>({
     name: '',
     email: '',
     message: ''
   });
-  
+
   const [formStatus, setFormStatus] = useState<{
     submitted: boolean;
     success: boolean;
@@ -29,12 +35,12 @@ const Contact: React.FC = () => {
     success: false,
     message: ''
   });
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
-    // Animation for label
+
+    // Animate label
     const label = e.target.previousElementSibling;
     if (label && label.tagName === 'LABEL') {
       if (value) {
@@ -44,36 +50,45 @@ const Contact: React.FC = () => {
       }
     }
   };
-  
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    
-    // Simulate form submission
-    setFormStatus({
-      submitted: true,
-      success: true,
-      message: 'Thank you for your message! I will get back to you soon.'
-    });
-    
-    // Reset form after successful submission
-    setFormData({ name: '', email: '', message: '' });
-    
-    // Reset label animations
-    if (formRef.current) {
-      const labels = formRef.current.querySelectorAll('label');
-      labels.forEach((label) => {
-        gsap.to(label, { y: 0, scale: 1, color: '#9CA3AF', duration: 0.3 });
+
+    if (!formRef.current) return;
+
+    emailjs
+      .sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
+      .then(() => {
+        setFormStatus({
+          submitted: true,
+          success: true,
+          message: '✅ Message sent successfully!'
+        });
+        setFormData({ name: '', email: '', message: '' });
+
+        if (formRef.current) {
+          const labels = formRef.current.querySelectorAll('label');
+          labels.forEach((label) => {
+            gsap.to(label, { y: 0, scale: 1, color: '#9CA3AF', duration: 0.3 });
+          });
+        }
+      })
+      .catch(() => {
+        setFormStatus({
+          submitted: true,
+          success: false,
+          message: '❌ Failed to send message. Please try again.'
+        });
       });
-    }
   };
-  
+
   return (
     <section id="contact" ref={sectionRef} className="section relative z-10">
       <div className="container mx-auto px-4">
         <h2 className="section-title">
           <span className="text-accent-green glow-text">Get In</span> Touch
         </h2>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
           <div>
             <Card className="h-full">
@@ -81,7 +96,7 @@ const Contact: React.FC = () => {
               <p className="text-gray-400 mb-8">
                 I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.
               </p>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-dark-200 flex items-center justify-center mr-4">
@@ -92,7 +107,7 @@ const Contact: React.FC = () => {
                     <p className="text-gray-400">huynh.lap.co@gmail.com</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-dark-200 flex items-center justify-center mr-4">
                     <Phone size={18} className="text-accent-purple" />
@@ -102,7 +117,7 @@ const Contact: React.FC = () => {
                     <p className="text-gray-400">07 68 64 84 59</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-dark-200 flex items-center justify-center mr-4">
                     <MapPin size={18} className="text-accent-green" />
@@ -115,22 +130,25 @@ const Contact: React.FC = () => {
               </div>
             </Card>
           </div>
-          
+
           <div>
             <Card glowColor="blue">
               <h3 className="text-2xl font-bold mb-6">Send Message</h3>
-              
-              {formStatus.submitted && formStatus.success ? (
-                <div className="bg-dark-200 p-4 rounded-lg border border-accent-green text-center">
-                  <p className="text-accent-green">{formStatus.message}</p>
+
+              {formStatus.submitted && (
+                <div
+                  className={`p-4 rounded-lg text-center ${
+                    formStatus.success ? 'bg-green-800 text-green-300' : 'bg-red-800 text-red-300'
+                  }`}
+                >
+                  {formStatus.message}
                 </div>
-              ) : (
+              )}
+
+              {!formStatus.success && (
                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   <div className="relative">
-                    <label 
-                      htmlFor="name" 
-                      className="absolute left-3 top-3 text-gray-400 transition-all duration-300"
-                    >
+                    <label htmlFor="name" className="absolute left-3 top-3 text-gray-400 transition-all duration-300">
                       Your Name
                     </label>
                     <input
@@ -143,12 +161,9 @@ const Contact: React.FC = () => {
                       className="w-full bg-dark-200 border border-gray-700 rounded-lg px-3 pt-6 pb-2 focus:outline-none focus:border-accent-cyan transition-colors"
                     />
                   </div>
-                  
+
                   <div className="relative">
-                    <label 
-                      htmlFor="email" 
-                      className="absolute left-3 top-3 text-gray-400 transition-all duration-300"
-                    >
+                    <label htmlFor="email" className="absolute left-3 top-3 text-gray-400 transition-all duration-300">
                       Your Email
                     </label>
                     <input
@@ -161,12 +176,9 @@ const Contact: React.FC = () => {
                       className="w-full bg-dark-200 border border-gray-700 rounded-lg px-3 pt-6 pb-2 focus:outline-none focus:border-accent-cyan transition-colors"
                     />
                   </div>
-                  
+
                   <div className="relative">
-                    <label 
-                      htmlFor="message" 
-                      className="absolute left-3 top-3 text-gray-400 transition-all duration-300"
-                    >
+                    <label htmlFor="message" className="absolute left-3 top-3 text-gray-400 transition-all duration-300">
                       Your Message
                     </label>
                     <textarea
@@ -179,7 +191,7 @@ const Contact: React.FC = () => {
                       className="w-full bg-dark-200 border border-gray-700 rounded-lg px-3 pt-6 pb-2 focus:outline-none focus:border-accent-cyan transition-colors resize-none"
                     />
                   </div>
-                  
+
                   <Button type="submit" glowColor="blue">
                     Send Message
                   </Button>

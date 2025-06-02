@@ -1,5 +1,5 @@
 // src/components/MusicControls.tsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Music, List, Search, X } from 'lucide-react';
 import YouTube from 'react-youtube';
 
@@ -50,10 +50,16 @@ const MusicControls: React.FC = () => {
     setCurrentTrackIndex((prev) => (prev + 1) % playlist.length);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      searchYouTube();
+    }
+  };
+
   return (
     <>
       {/* Control Icons */}
-      <div className="fixed top-1/2 right-4 -translate-y-1/2 z-50 space-y-3 flex flex-col items-end">
+      <div className="fixed top-[32%] right-4 z-50 space-y-3 flex flex-col items-end">
         <button
           onClick={() => setShowSearch((prev) => !prev)}
           className="w-10 h-10 rounded-full bg-black/70 backdrop-blur text-white flex items-center justify-center hover:bg-accent-cyan"
@@ -72,12 +78,13 @@ const MusicControls: React.FC = () => {
 
       {/* Search Panel */}
       {showSearch && (
-        <div className="fixed top-1/2 right-20 -translate-y-1/2 w-96 bg-black/90 backdrop-blur-xl p-4 rounded-lg shadow-lg text-white z-[9999]">
+        <div className="fixed top-[32%] right-20 w-96 bg-black/90 backdrop-blur-xl p-4 rounded-lg shadow-lg text-white z-[9999]">
           <div className="flex items-center mb-2">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyPress}
               placeholder="Search YouTube..."
               className="flex-1 px-3 py-2 rounded bg-zinc-800 text-sm z-[9999]"
             />
@@ -112,7 +119,7 @@ const MusicControls: React.FC = () => {
 
       {/* Playlist Panel */}
       {showPlaylist && (
-        <div className="fixed top-1/2 right-20 translate-y-16 w-72 bg-black/85 backdrop-blur-xl p-3 rounded-lg shadow-lg text-white z-[9998]">
+        <div className="fixed top-[50%] right-20 translate-y-[-50%] w-72 bg-black/85 backdrop-blur-xl p-3 rounded-lg shadow-lg text-white z-[9998]">
           <h4 className="text-sm font-semibold mb-2">Playlist</h4>
           <ul className="space-y-1 max-h-48 overflow-y-auto text-sm">
             {playlist.map((track, i) => (
