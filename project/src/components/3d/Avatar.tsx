@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-const MODEL_PATH = '/models/myself.glb';
+const MODEL_PATH = '/models/myself2.glb';
 
 const MyAvatarGLB: React.FC = () => {
   const group = useRef<THREE.Group>(null!);
@@ -45,8 +45,8 @@ const MyAvatarGLB: React.FC = () => {
 const Avatar: React.FC = () => {
   return (
     <>
-      <ambientLight intensity={1.15} />
-      <directionalLight position={[0, 8, 6]} intensity={1.1} />
+      <ambientLight intensity={1.} />
+      <directionalLight position={[0, 8, 6]} intensity={1.0} />
       <pointLight position={[10, 10, 10]} intensity={0.5} />
       <pointLight position={[-10, -10, -10]} color="#00FFFF" intensity={0.16} />
       <MyAvatarGLB />
@@ -55,7 +55,7 @@ const Avatar: React.FC = () => {
         enablePan={true}
         minPolarAngle={0}
         maxPolarAngle={Math.PI}
-        rotateSpeed={0.5}
+        rotateSpeed={0.0}
       />
     </>
   );
