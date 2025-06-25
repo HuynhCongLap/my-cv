@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
           <p className="text-gray-400 max-w-lg mx-auto text-sm md:text-base leading-relaxed">
             Creating immersive digital experiences at the intersection of art and technology.
             <br />
-            Specializing in real-time 3D graphics, WebGL, and creative coding.
+            Specializing in real-time 3D graphics, WebGL, React and creative coding.
           </p>
 
           <a

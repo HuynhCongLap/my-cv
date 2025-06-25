@@ -33,7 +33,7 @@ export const skillsData: SkillCategory[] = [
       { name: "Python", level: 90, color: "bg-accent-cyan" },
       { name: "C++", level: 75, color: "bg-accent-green" },
       { name: "Webgl", level: 95, color: "bg-accent-purple" },
-      { name: "Shader and GLSL", level: 95, color: "bg-accent-yellow" },
+      { name: "NextJs", level: 95, color: "bg-accent-yellow" },
       { name: "React", level: 90, color: "bg-accent-blue" },
       { name: "Tailwind", level: 70, color: "bg-accent-cyan" },
       { name: "Gsap", level: 75, color: "bg-accent-green" },
@@ -66,7 +66,7 @@ export const skillsData: SkillCategory[] = [
       { name: "CI/CD & Deployment", level: 75, color: "bg-accent-blue" },
       { name: "Unit Testing & Storybook", level: 70, color: "bg-accent-green" },
       { name: "Vite / Webpack", level: 85, color: "bg-accent-cyan" },
-      { name: "Figma to Code", level: 75, color: "bg-accent-yellow" }
+      { name: "Figma", level: 75, color: "bg-accent-yellow" }
     ]
   }
 ];
